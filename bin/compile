@@ -22,6 +22,7 @@ source $bp_dir/bin/util/common.sh
 # for extensions that need special treatment
 source $bp_dir/bin/util/newrelic.sh
 source $bp_dir/bin/util/blackfire.sh
+source $bp_dir/bin/util/ioncube.sh
 
 # if this is set it prevents Git clones (e.g. for Composer installs from source) during the build in some circumstances, and it is set in SSH Git deploys to Heroku
 unset GIT_DIR
@@ -304,6 +305,8 @@ if [[ "${HEROKU_PHP_INSTALL_DEV+CI}" != "CI" ]]; then
     # special treatment for New Relic; we enable it if we detect a license key for it
     install_newrelic_ext
     install_newrelic_userini
+    # special treatment for IonCube; we enable it by default
+    install_ioncube_ext
 fi
 
 # done with platform installs; restore COMPOSER from previous value
