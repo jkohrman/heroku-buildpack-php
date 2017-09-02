@@ -4,7 +4,7 @@ install_ext() {
     local ext=$1
     local reason=${2:-}
     local custom_url=${3:-}
-    local ext_ini="$BP_DIR/conf/php/conf.d/ext-$ext.ini"
+    local ext_ini="$bp_dir/conf/php/conf.d/ext-$ext.ini"
     local ext_so=
     local ext_dir=$(basename $(php-config --extension-dir))
     if [[ -f "$ext_ini" ]]; then
