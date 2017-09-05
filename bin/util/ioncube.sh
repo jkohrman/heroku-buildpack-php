@@ -10,16 +10,16 @@ install_ext() {
     if [[ -f "$ext_ini" ]]; then
         if [[ ! -f "$ext_dir/$ext.so" ]]; then
             if [[ -z "$custom_url" ]]; then
-                curl --silent --location "${S3_URL}/extensions/${ext_dir}/${ext}.tar.gz" | tar xz -C $BUILD_DIR/.heroku/php
+                curl --silent --location "${S3_URL}/extensions/${ext_dir}/${ext}.tar.gz" | tar xz -C $build_dir/.heroku/php
             else
-                curl --silent --location "$custom_url" | tar xz -C $BUILD_DIR/.heroku/php
+                curl --silent --location "$custom_url" | tar xz -C $build_dir/.heroku/php
             fi
         else
             echo "- ${ext} (${reason}; downloaded)" | indent
         fi
-        cp "${ext_ini}" "${BUILD_DIR}/.heroku/php/etc/php/conf.d"
+        cp "${ext_ini}" "${build_dir}/.heroku/php/etc/php/conf.d"
     elif [[ -f "${ext_dir}/${ext}.so" ]]; then
-        echo "extension = ${ext}.so" > "${BUILD_DIR}/.heroku/php/etc/php/conf.d/ext-${ext}.ini"
+        echo "extension = ${ext}.so" > "${build_dir}/.heroku/php/etc/php/conf.d/ext-${ext}.ini"
         echo "- ${ext} (${reason}; bundled)" | indent
     elif echo -n ${ext} | php -r 'exit((int)!extension_loaded(file_get_contents("php://stdin")));'; then
         : # echo "- ${ext} (${reason}; enabled by default)" | indent
