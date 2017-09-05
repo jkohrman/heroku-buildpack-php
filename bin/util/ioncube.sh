@@ -6,7 +6,7 @@ install_ext() {
     local custom_url=${3:-}
     local ext_ini="$bp_dir/conf/php/conf.d/ext-$ext.ini"
     local ext_so=
-    export ext_dir=$(basename $(php-config --extension-dir))
+    local ext_dir=$(basename $(php-config --extension-dir))
     if [[ -f "$ext_ini" ]]; then
         if [[ ! -f "$ext_dir/$ext.so" ]]; then
             if [[ -z "$custom_url" ]]; then
@@ -29,7 +29,8 @@ install_ext() {
 }
 
 install_ioncube_ext() {
+    local ext_dir=$(php-config --extension-dir)
     export PHP_VERSION=$(php -r "echo explode('.', PHP_VERSION)[0] . '.' . explode('.', PHP_VERSION)[1];")
     install_ext "ioncube" "automatic" "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
-    ln -s $ext_dir/ioncube_loader_lin_$PHP_VERSION.so $ext_dir/ioncube.so
+    ln -s $build_dir/.heroku/php/ioncube/ioncube_loader_lin_$PHP_VERSION.so $ext_dir/ioncube.so
 }
