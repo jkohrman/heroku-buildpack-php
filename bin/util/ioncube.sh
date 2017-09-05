@@ -31,7 +31,7 @@ install_ext() {
 }
 
 install_ioncube_ext() {
-    PHP_VERSION=$(php -r "echo explode('.', PHP_VERSION)[0] . '.' . explode('.', PHP_VERSION)[1];")
+    export PHP_VERSION=$(php -r "echo explode('.', PHP_VERSION)[0] . '.' . explode('.', PHP_VERSION)[1]")
     install_ext "ioncube" "automatic" "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
     ln -s $ext_dir/ioncube_loader_lin_$PHP_VERSION.so $ext_dir/ioncube.so
 }
