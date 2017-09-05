@@ -8,16 +8,14 @@ install_ext() {
     local ext_so=
     export ext_dir=$(basename $(php-config --extension-dir))
     if [[ -f "$ext_ini" ]]; then
-        ext_so=$(php -r '$ini=parse_ini_file("'$ext_ini'"); echo $ext=$ini["zend_extension"]?$ini["extension"]; exit((int)empty($ext));')
-        if [[ ! -f "${ext_dir}/${ext_so}" ]]; then
+        if [[ ! -f "$ext_dir/$ext.so" ]]; then
             if [[ -z "$custom_url" ]]; then
                 curl --silent --location "${S3_URL}/extensions/${ext_dir}/${ext}.tar.gz" | tar xz -C $BUILD_DIR/.heroku/php
             else
                 curl --silent --location "$custom_url" | tar xz -C $BUILD_DIR/.heroku/php
             fi
-            echo "- ${ext} (${reason}; downloaded)" | indent
         else
-            echo "- ${ext} (${reason}; bundled)" | indent
+            echo "- ${ext} (${reason}; downloaded)" | indent
         fi
         cp "${ext_ini}" "${BUILD_DIR}/.heroku/php/etc/php/conf.d"
     elif [[ -f "${ext_dir}/${ext}.so" ]]; then
@@ -31,7 +29,7 @@ install_ext() {
 }
 
 install_ioncube_ext() {
-    export PHP_VERSION=$(php -r "echo explode('.', PHP_VERSION)[0] . '.' . explode('.', PHP_VERSION)[1]")
+    export PHP_VERSION=$(php -r "echo explode('.', PHP_VERSION)[0] . '.' . explode('.', PHP_VERSION)[1];")
     install_ext "ioncube" "automatic" "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
     ln -s $ext_dir/ioncube_loader_lin_$PHP_VERSION.so $ext_dir/ioncube.so
 }
